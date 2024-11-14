@@ -1,8 +1,11 @@
 
 import UIKit
 import FirebaseAuth
+import JGProgressHUD
 
 class RegisterViewController: UIViewController {
+    
+    private let spinner = JGProgressHUD(style: .dark)
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -176,9 +179,16 @@ class RegisterViewController: UIViewController {
             alertUserLoginError()
             return
         }
+        spinner.show(in: view)
         //Firebase Login
         DatabaseManager.shared.userExists(with: email) { [weak self] exists in
+            
             guard let strongSelf = self else { return }
+            
+            DispatchQueue.main.async {
+                strongSelf.spinner.dismiss()
+            }
+            
             guard !exists else {
                 //User already exists
                 strongSelf.alertUserLoginError(message: "Looks like a user account for that email address already exists.")
@@ -189,9 +199,27 @@ class RegisterViewController: UIViewController {
                     print("Error creating user: \(error?.localizedDescription ?? "")")
                     return
                 }
-                DatabaseManager.shared.insertUser(with: chatAppUser(firstName: firstName,
-                                                                    lastName: lastName,
-                                                                    email: email))
+                let chatUser = chatAppUser(firstName: firstName,
+                                           lastName: lastName,
+                                           email: email)
+                DatabaseManager.shared.insertUser(with: chatUser, completion: { success  in
+                    if success {
+                        //Upload Image
+                        guard let image = strongSelf.imageview.image, let data = image.pngData() else {
+                            return
+                        }
+                        let fileName = chatUser.profilePictiurefileName
+                        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
+                            switch result {
+                            case .success(let downloadURL):
+                                UserDefaults.standard.set(downloadURL, forKey: "Profile_picture_url")
+                                print(downloadURL)
+                            case .failure(let error):
+                                print("Storage Manager Error: \(error.localizedDescription)")
+                            }
+                        })
+                    }
+                })
                 strongSelf.navigationController?.dismiss(animated: true)
             }
         }

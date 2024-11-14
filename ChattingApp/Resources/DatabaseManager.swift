@@ -8,6 +8,14 @@ final class DatabaseManager {
     
     private let database = Database.database().reference()
     
+    static func safeEmail(email: String) -> String {
+        var safeEmail = email.replacingOccurrences(of: ".", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "[", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "]", with: "-")
+        return safeEmail
+    }
+    
 }
 
 //MARK: - Account Management
@@ -29,11 +37,18 @@ extension DatabaseManager {
     }
     
     /// Insersts new user to database
-    public func insertUser(with user: chatAppUser) {
+    public func insertUser(with user: chatAppUser, completion: @escaping (Bool) -> Void) {
         database.child(user.safeEmail).childByAutoId().setValue([
             "first_name": user.firstName,
             "last_name": user.lastName
-        ])
+        ], withCompletionBlock: { error, _ in
+            guard error == nil else {
+                print("failed to write Database")
+                completion(false)
+                return
+            }
+            completion(true)
+        })
     }
 }
 
@@ -48,5 +63,9 @@ struct chatAppUser: Codable {
         safeEmail = safeEmail.replacingOccurrences(of: "[", with: "-")
         safeEmail = safeEmail.replacingOccurrences(of: "]", with: "-")
         return safeEmail
+    }
+    
+    var profilePictiurefileName: String {
+        return "\(safeEmail)_profile_picture.png"
     }
 }
