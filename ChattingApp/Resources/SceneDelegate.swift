@@ -1,9 +1,3 @@
-//
-//  SceneDelegate.swift
-//  ChattingApp
-//
-//  Created by asset 212 on 13/11/24.
-//
 
 import UIKit
 

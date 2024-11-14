@@ -1,19 +1,22 @@
-//
-//  ViewController.swift
-//  ChattingApp
-//
-//  Created by asset 212 on 13/11/24.
-//
 
 import UIKit
+import FirebaseAuth
+
 
 class ConversationViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
     }
-
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        validateAuth()
+    }
+    
+    private func validateAuth() {
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            
+        }
+    }
 }
-
