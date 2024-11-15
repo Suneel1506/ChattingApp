@@ -123,14 +123,18 @@ class LoginViewController: UIViewController {
         //Firebase Login
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             
-            guard let strongSelf = self else { return }
+            guard let strongSelf = self else {
+                return
+            }
             
             DispatchQueue.main.async {
                 strongSelf.spinner.dismiss()
             }
+            
+            
         
             guard let result = authResult, error == nil else {
-                print("Failed to login with Email: \(email)")
+                strongSelf.alertUserLoginError(message: "It looks like you don't have an account. Would you like to register?")
                 return
             }
             let user = result.user
@@ -141,9 +145,9 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func alertUserLoginError() {
+    func alertUserLoginError(message: String = "Please enter all correct information to log in.") {
         let alert = UIAlertController(title: "Woops",
-                                      message: "Please enter all correct information to log in.",
+                                      message: message,
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss",
                                       style: .cancel,

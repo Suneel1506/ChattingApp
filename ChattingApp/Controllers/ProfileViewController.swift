@@ -42,6 +42,7 @@ class ProfileViewController: UIViewController {
         imageView.layer.borderWidth = 3
         imageView.image = UIImage(named: "Profile")
         imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageView.width / 2
         headerView.addSubview(imageView)
         
         StorageManager.shared.downloadUrl(for: path, completion: { [weak self] result in
