@@ -100,8 +100,8 @@ class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Login"
-        view.backgroundColor = .white
+        title = "Log In"
+        view.backgroundColor = .systemBackground
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register",
                                                             style: .done,
@@ -158,7 +158,7 @@ class RegisterViewController: UIViewController {
     
     @objc private func didTapRegister() {
         let vc = RegisterViewController()
-        vc.title = "Register"
+        vc.title = "Create Account"
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -199,16 +199,21 @@ class RegisterViewController: UIViewController {
                     print("Error creating user: \(error?.localizedDescription ?? "")")
                     return
                 }
-                let chatUser = chatAppUser(firstName: firstName,
+                
+                UserDefaults.standard.setValue(email, forKey: "email")
+                UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
+                
+                let chatUser = ChatAppUser(firstName: firstName,
                                            lastName: lastName,
-                                           email: email)
+                                           emailAddress: email)
                 DatabaseManager.shared.insertUser(with: chatUser, completion: { success  in
                     if success {
                         //Upload Image
-                        guard let image = strongSelf.imageview.image, let data = image.pngData() else {
+                        guard let image = strongSelf.imageview.image,
+                              let data = image.pngData() else {
                             return
                         }
-                        let fileName = chatUser.profilePictiurefileName
+                        let fileName = chatUser.profilePictureFileName
                         StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
                             switch result {
                             case .success(let downloadURL):

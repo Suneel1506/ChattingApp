@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ftd-AQ-Zla">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -11,7 +12,7 @@
         <!--Chats-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ConversationViewController" customModule="ChattingApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ConversationsViewController" customModule="ChattingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,7 +29,7 @@
         <scene sceneID="WkU-4K-WrM">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MCU-KW-bbM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chats" id="h5k-VU-FeN"/>
+                    <tabBarItem key="tabBarItem" title="Chats" image="message" catalog="system" id="h5k-VU-FeN"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="VrG-Qx-cMj">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>
@@ -65,7 +66,7 @@
         <scene sceneID="OGg-lO-lZ2">
             <objects>
                 <navigationController id="5QO-bE-DA4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="mBY-Y1-XiC"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="person.crop.circle" catalog="system" id="mBY-Y1-XiC"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="z0Y-Lz-wwX">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -111,6 +112,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="message" catalog="system" width="128" height="116"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -65,6 +65,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "Login"
         view.backgroundColor = .white
         
@@ -108,7 +109,7 @@ class LoginViewController: UIViewController {
     
     @objc private func didTapRegister() {
         let vc = RegisterViewController()
-        vc.title = "Register"
+        vc.title = "Create Account"
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -138,6 +139,21 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
+            let safeEmail = DatabaseManager.safeEmail(emailAddress: email)
+            DatabaseManager.shared.getDataFor(path: safeEmail, completion: { result in
+                
+                switch result {
+                case .success(let data):
+                    guard let userData = data as? [String: Any],
+                          let firstName = userData["first_name"],
+                          let lastName = userData["last_name"] else {
+                        return
+                    }
+                    UserDefaults.standard.set("\(firstName) \(lastName)", forKey: "name")
+                case .failure(let error):
+                    print("failed to read the data with error: \(error)")
+                }
+            })
             UserDefaults.standard.set(email, forKey: "email")
             UserDefaults.standard.synchronize()
             print("Logged In User: \(user)")
