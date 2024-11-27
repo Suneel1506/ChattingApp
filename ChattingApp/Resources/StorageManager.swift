@@ -11,7 +11,7 @@ final class StorageManager {
     private let storage = Storage.storage().reference()
 
     /*
-     /images/afraz9-gmail-com_profile_picture.png
+     /images/suneel-gmail-com_profile_picture.png
      */
 
     public typealias UploadPictureCompletion = (Result<String, Error>) -> Void
